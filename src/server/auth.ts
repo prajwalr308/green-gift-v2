@@ -46,6 +46,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -63,6 +64,7 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+  secret: env.NEXTAUTH_SECRET,
 };
 
 /**
