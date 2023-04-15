@@ -9,6 +9,14 @@ const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const { data: session } = useSession();
 
+  async function handleSignIn(): Promise<void> {
+    try {
+      await signIn("google");
+      // Handle successful sign in
+    } catch (error) {
+      // Handle sign in failure
+    }
+  }
   return (
     <>
       <Head>
@@ -21,10 +29,22 @@ const Home: NextPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
           </h1>
-          {session && session.user ? (
-            <button onClick={() => signOut()}>Sign out</button>
+          {session ? (
+            <button
+              onClick={() => {
+                signOut().catch((err) => console.error(err));
+              }}
+            >
+              Sign out
+            </button>
           ) : (
-            <button onClick={() => signIn()}>Sign in</button>
+            <button
+              onClick={() => {
+                signIn("google").catch((err) => console.error(err));
+              }}
+            >
+              Sign in
+            </button>
           )}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
             <Link
