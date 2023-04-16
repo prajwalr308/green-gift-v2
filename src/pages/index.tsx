@@ -5,9 +5,11 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
 import Image from "next/image";
+import AddPosts from "~/components/AddPosts";
+import React from "react";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const hello = api.posts.hello.useQuery({ text: "from tRPC" });
   return (
     <>
       <Head>
@@ -26,8 +28,11 @@ export default Home;
 
 const Navbar: React.FC = () => {
   const { data: sessionData } = useSession();
+  const [showModal, setShowModal] = React.useState(false);
+  const openModal = () => setShowModal(true);
+  const closeModal = () => setShowModal(false);
 
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+  const { data: secretMessage } = api.posts.getSecretMessage.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined }
   );
@@ -48,6 +53,18 @@ const Navbar: React.FC = () => {
             <div className="mb-12"></div> //put logo here later
           )}
         </div>
+        <button
+          className=" rounded-full font-semibold text-black no-underline transition"
+          onClick={() => setShowModal(true)}
+        >
+          Create
+        </button>
+        <AddPosts
+          showModal={showModal}
+          setShowModal={setShowModal}
+          openModal={openModal}
+          closeModal={closeModal}
+        />
         <button className=" rounded-full font-semibold text-black no-underline transition">
           posts
         </button>
