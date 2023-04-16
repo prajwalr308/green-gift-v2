@@ -12,6 +12,7 @@ interface FormData {
   postTitle: string;
   postBody: string;
   image: File | null;
+  location: string;
 }
 const customStyles = {
   content: {
@@ -30,6 +31,7 @@ const AddPosts = (props: AddPostsProps) => {
     postTitle: "",
     postBody: "",
     image: null,
+    location: "",
   });
   const ctx = api.useContext();
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
@@ -39,6 +41,7 @@ const AddPosts = (props: AddPostsProps) => {
         postTitle: "",
         postBody: "",
         image: null,
+        location: "",
       });
       void ctx.posts.getAll.invalidate();
     },
@@ -85,6 +88,7 @@ const AddPosts = (props: AddPostsProps) => {
       content: formData.postBody,
       title: formData.postTitle,
       image: "image",
+      location: formData.location,
     });
   };
 
@@ -92,6 +96,7 @@ const AddPosts = (props: AddPostsProps) => {
     <Modal
       isOpen={props.showModal}
       onRequestClose={props.closeModal}
+      ariaHideApp={false}
       style={customStyles}
     >
       <div className="mx-auto w-full max-w-md">
@@ -127,6 +132,21 @@ const AddPosts = (props: AddPostsProps) => {
               disabled={isPosting}
               onChange={handleInputChange}
             ></textarea>
+          </div>
+          <div className="mb-4">
+            <label className="mb-2 block font-bold text-gray-700">
+              location
+            </label>
+            <input
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              id="location"
+              name="location"
+              type="text"
+              placeholder="Post location"
+              value={formData.location}
+              onChange={handleInputChange}
+              disabled={isPosting}
+            />
           </div>
           <div className="mb-6">
             <label className="mb-2 block font-bold text-gray-700">Image</label>
