@@ -25,20 +25,28 @@ const Home: NextPage = () => {
           <Navbar />
         </div>
         <div className="flex justify-center ">
-          <div className="flex-col">
-            <div>Post List</div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:max-w-6xl md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
             {data?.map((post) => (
-              <div key={post.id}>
-                <div>{post.title}</div>
-                {post.image && (
-                  <Image
-                    src={post.image }
-                    alt="profile"
-                    width={298}
-                    height={198}
-                  />
-                )}
-              </div> // add rest of the properties is here later lie post body and image
+              <div key={post.id} className="rounded-lg bg-white shadow-md">
+                <div className="p-4">
+                  <div className="mb-2 font-bold">Title: {post.title}</div>
+                  <div className="mb-4">desc: {post.content}</div>
+                  <div className="mb-2 text-sm text-gray-500">
+                    Location: {post.location}
+                  </div>
+                  {post.image && (
+                    <div className="mb-4">
+                      <Image
+                        src={post.image}
+                        alt="profile"
+                        width={298}
+                        height={198}
+                        className="rounded-lg shadow-md"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -54,11 +62,6 @@ const Navbar: React.FC = () => {
   const [showModal, setShowModal] = React.useState(false);
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
-
-  const { data: secretMessage } = api.posts.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
 
   return (
     <div className="w-full border-slate-400  md:max-w-6xl">
@@ -102,10 +105,6 @@ const Navbar: React.FC = () => {
           {sessionData ? "Sign out" : "Sign in"}
         </button>
       </div>
-      <p className="text-center text-2xl text-black">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        {secretMessage && <span> - {secretMessage}</span>}
-      </p>
     </div>
   );
 };
