@@ -6,13 +6,28 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import Image from "next/image";
 import AddPosts from "~/components/AddPosts";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Home: NextPage = () => {
   const { data, isLoading } = api.posts.getAll.useQuery();
-  if (isLoading) return <div>loading...</div>;
-  console.log(data);
 
+  const ctx = api.useContext();
+  const { mutate, isLoading: isPosting } = api.postLikes.likedPost.useMutation({
+    onSuccess: (data) => {
+      console.log(data);
+
+      void ctx.posts.getAll.invalidate();
+    },
+    onError: (err) => {
+      // const errorMessage = err.data?.zodError?.fieldErrors;
+
+      console.log(err);
+    },
+  });
+
+  if (isLoading) return <div>loading...</div>;
+  if (!data) return <div>no data</div>;
+  console.log(data);
   return (
     <>
       <Head>
@@ -45,6 +60,15 @@ const Home: NextPage = () => {
                       />
                     </div>
                   )}
+                  {/* button for like  */}
+                  <button
+                    onClick={() => {
+                      mutate({ postId: post.id });
+                    }}
+                    className="rounded-full font-semibold text-black no-underline transition"
+                  >
+                    Like:{post.PostLikes.length}
+                  </button>
                 </div>
               </div>
             ))}

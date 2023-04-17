@@ -16,8 +16,19 @@ export const postRouter = createTRPCRouter({
     }),
 
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.posts.findMany();
+    return ctx.prisma.posts.findMany({
+      include: {
+        PostLikes: true,
+      },
+    });
   }),
+  getPostById: publicProcedure
+    .input(z.object({ postId: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.posts.findUnique({
+        where: { id: input.postId },
+      });
+    }),
 
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
