@@ -26,10 +26,10 @@ export const postRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
-        title: z.string(),
-        content: z.string(),
+        title: z.string().min(4),
+        content: z.string().min(4),
         image: z.string().url(),
-        location: z.string(),
+        location: z.string().min(4),
       })
     )
     .mutation(async ({ ctx, input }) => {

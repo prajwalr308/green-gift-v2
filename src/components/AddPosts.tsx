@@ -49,9 +49,17 @@ const AddPosts = (props: AddPostsProps) => {
       void ctx.posts.getAll.invalidate();
     },
     onError: (err) => {
-      const errorMessage = err.data?.zodError?.fieldErrors.content;
-      if (errorMessage && errorMessage[0]) {
-        toast.error(errorMessage[0]);
+      const errorMessage = err.data?.zodError?.fieldErrors;
+      if (errorMessage) {
+        Object.keys(errorMessage).forEach((field) => {
+          const errors = errorMessage[field];
+          if (errors) {
+            errors.forEach((error) => {
+              console.log(error);
+              toast.error(error);
+            });
+          }
+        });
       } else {
         toast.error("something went wrong");
       }
