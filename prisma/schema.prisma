@@ -74,10 +74,10 @@ model Posts {
   updatedAt DateTime    @updatedAt
   title     String
   content   String
-  image     String?     @db.Text
+  image     String     @db.Text
   status    String?     @default("ACTIVE")
   endDate   DateTime?
-  location  String?
+  location  String
   published Boolean     @default(false)
   author    User        @relation(fields: [authorId], references: [id])
   authorId  String

@@ -28,7 +28,7 @@ export const postRouter = createTRPCRouter({
       z.object({
         title: z.string(),
         content: z.string(),
-        image: z.string(),
+        image: z.string().url(),
         location: z.string(),
       })
     )

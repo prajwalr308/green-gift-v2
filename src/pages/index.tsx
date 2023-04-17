@@ -10,7 +10,8 @@ import React from "react";
 
 const Home: NextPage = () => {
   const { data, isLoading } = api.posts.getAll.useQuery();
-  isLoading && <div>loading...</div>;
+  if (isLoading) return <div>loading...</div>;
+  console.log(data);
 
   return (
     <>
@@ -27,7 +28,17 @@ const Home: NextPage = () => {
           <div className="flex-col">
             <div>Post List</div>
             {data?.map((post) => (
-              <div key={post.id}>{post.title}</div>// add rest of the properties is here later lie post body and image
+              <div key={post.id}>
+                <div>{post.title}</div>
+                {post.image && (
+                  <Image
+                    src={post.image }
+                    alt="profile"
+                    width={298}
+                    height={198}
+                  />
+                )}
+              </div> // add rest of the properties is here later lie post body and image
             ))}
           </div>
         </div>

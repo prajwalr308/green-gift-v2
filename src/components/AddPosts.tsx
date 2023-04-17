@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
+import { storage } from "../firebase";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+
 interface AddPostsProps {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -55,6 +58,8 @@ const AddPosts = (props: AddPostsProps) => {
       console.log(err);
     },
   });
+  const [imgUrl, setImgUrl] = useState("");
+  const [progresspercent, setProgresspercent] = useState(0);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -84,12 +89,34 @@ const AddPosts = (props: AddPostsProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Perform any necessary actions with the form data
-    mutate({
-      content: formData.postBody,
-      title: formData.postTitle,
-      image: "image",
-      location: formData.location,
-    });
+    const file = formData.image;
+    if (!file) return;
+    const storageRef = ref(storage, `files/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgresspercent(progress);
+      },
+      (error) => {
+        alert(error);
+      },
+      () => {
+        void getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImgUrl(downloadURL);
+          mutate({
+            content: formData.postBody,
+            title: formData.postTitle,
+            image: downloadURL,
+            location: formData.location,
+          });
+        });
+      }
+    );
   };
 
   return (
