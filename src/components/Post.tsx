@@ -89,7 +89,7 @@ const PostView = (props: Post) => {
     <div className="hover:bg-dark-lighter anim border-opacity-15 flex cursor-pointer border-b border-gray-100 p-3">
       {props.postId ? (
         <Link href={`/post/${props.postId}` || ""}>
-          <p className="h-12 w-12 flex-shrink-0 pt-1">
+          <div className="h-12 w-12 flex-shrink-0 pt-1">
             <div className="relative">
               <div className="anim hover:bg-opacity-15 absolute bottom-0 left-0 right-0 top-0 z-10 rounded-full hover:bg-black"></div>
               {props.post.author.image && props.post.author.name && (
@@ -102,11 +102,11 @@ const PostView = (props: Post) => {
                 />
               )}
             </div>
-          </p>
+          </div>
         </Link>
       ) : (
         <div>
-          <p className="h-12 w-12 flex-shrink-0 pt-1">
+          <div className="h-12 w-12 flex-shrink-0 pt-1">
             <div className="relative">
               <div className="anim hover:bg-opacity-15 absolute bottom-0 left-0 right-0 top-0 z-10 rounded-full hover:bg-black"></div>
               {props.post.author.image && props.post.author.name && (
@@ -119,7 +119,7 @@ const PostView = (props: Post) => {
                 />
               )}
             </div>
-          </p>
+          </div>
         </div>
       )}
       <div className="relative flex-grow px-3 pb-1">
