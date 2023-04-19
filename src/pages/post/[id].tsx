@@ -51,8 +51,10 @@ const PostById: NextPage<PageProps> = ({ postId }) => {
     );
     if (isLiked) {
       dislike({ postId: post.id });
+      return false;
     } else {
       like({ postId: post.id });
+      return true;
     }
   };
   console.log("🚀 ~ file: [id].tsx:24 ~ data:", data);
@@ -66,7 +68,7 @@ const PostById: NextPage<PageProps> = ({ postId }) => {
 
       <main className="flex justify-center">
         <PostView
-          postId={data[0]?.id as string}
+          postId={undefined}
           postTitle={data[0]?.title as string}
           authorImage={data[0]?.author.image as string}
           authorName={data[0]?.author.name as string}
@@ -77,7 +79,7 @@ const PostById: NextPage<PageProps> = ({ postId }) => {
           postAuthorId={data[0]?.author.id as string}
           postCreatedAt={data[0]?.createdAt as Date}
           postUpdatedAt={data[0]?.updatedAt as Date}
-          likeHandler={() => likeHandler(data[0]!)}
+          post={data[0]!}
         />
       </main>
     </>

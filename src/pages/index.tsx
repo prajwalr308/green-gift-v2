@@ -43,23 +43,6 @@ const Home: NextPage = () => {
       },
     });
 
-  const likeHandler = (
-    post: Posts & {
-      PostLikes: PostLikes[];
-      PostComments: PostComments[];
-      
-    }
-  ) => {
-    const isLiked = post.PostLikes.find(
-      (like) => like.userId === sessionData?.user.id
-    );
-    if (isLiked) {
-      dislike({ postId: post.id });
-    } else {
-      like({ postId: post.id });
-    }
-  };
-
   if (isLoading) return <div>loading...</div>;
   if (!data) return <div>no data</div>;
   console.log(data);
@@ -126,7 +109,7 @@ const Home: NextPage = () => {
                     postComments={post.PostComments}
                     postCreatedAt={post.createdAt}
                     postUpdatedAt={post.updatedAt}
-                    likeHandler={() => likeHandler(post)}
+                    post={post}
                   />
                 </div>
               ))}
