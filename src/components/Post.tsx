@@ -41,8 +41,6 @@ const PostView = (props: Post) => {
     api.postLikes.likedPost.useMutation({
       onSuccess: (data) => {
         console.log(data);
-
-        void ctx.posts.getAll.invalidate();
       },
       onError: (err) => {
         toast.error("Something went wrong, try logging in");
@@ -54,8 +52,6 @@ const PostView = (props: Post) => {
     api.postLikes.unlikedPost.useMutation({
       onSuccess: (data) => {
         console.log(data);
-
-        void ctx.posts.getAll.invalidate();
       },
       onError: (err) => {
         toast.error("Something went wrong, try logging in");
