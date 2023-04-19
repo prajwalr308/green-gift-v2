@@ -20,15 +20,17 @@ export const postRouter = createTRPCRouter({
       include: {
         PostLikes: true,
         PostComments: true,
+        author: true,
       },
     });
   }),
-  getPostById: publicProcedure
-    .input(z.object({ postId: z.string() }))
-    .query(({ ctx, input }) => {
-      return ctx.prisma.posts.findUnique({
-        where: { id: input.postId },
+  getPostByUserId: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const postByUser = ctx.prisma.posts.findMany({
+        where: { authorId: input.userId },
       });
+      return postByUser;
     }),
 
   getSecretMessage: protectedProcedure.query(() => {
