@@ -49,15 +49,16 @@ model Session {
 }
 
 model User {
-  id            String      @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?     @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   Posts         Posts[]
   PostLikes     PostLikes[]
+  PostComments  PostComments[]
 }
 
 model VerificationToken {
@@ -69,19 +70,20 @@ model VerificationToken {
 }
 
 model Posts {
-  id        String      @id @default(cuid())
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  title     String
-  content   String
-  image     String      @db.Text
-  status    String?     @default("ACTIVE")
-  endDate   DateTime?
-  location  String
-  published Boolean     @default(false)
-  author    User        @relation(fields: [authorId], references: [id])
-  authorId  String
-  PostLikes PostLikes[]
+  id           String         @id @default(cuid())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  title        String
+  content      String
+  image        String         @db.Text
+  status       String?        @default("ACTIVE")
+  endDate      DateTime?
+  location     String
+  published    Boolean        @default(false)
+  author       User           @relation(fields: [authorId], references: [id])
+  authorId     String
+  PostLikes    PostLikes[]
+  PostComments PostComments[]
 
   @@index([authorId])
 }
@@ -96,4 +98,18 @@ model PostLikes {
   userId    String
 
   @@unique([postId, userId])
+}
+
+model PostComments {
+  id        String    @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  post      Posts     @relation(fields: [postId], references: [id])
+  postId    String
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  content   String
+
+  @@index([postId])
+  @@index([userId])
 }

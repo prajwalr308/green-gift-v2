@@ -28,4 +28,27 @@ export const postLikesRouter = createTRPCRouter({
         return null;
       }
     }),
+  unlikedPost: protectedProcedure
+    .input(
+      z.object({
+        postId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const author = ctx.session.user;
+      try {
+        const post = await ctx.prisma.postLikes.delete({
+          where: {
+            postId_userId: {
+              postId: input.postId,
+              userId: author.id,
+            },
+          },
+        });
+        return post;
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    }),
 });

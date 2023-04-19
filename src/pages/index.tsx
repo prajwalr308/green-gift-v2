@@ -7,23 +7,55 @@ import { api } from "~/utils/api";
 import Image from "next/image";
 import AddPosts from "~/components/AddPosts";
 import React, { useEffect } from "react";
+import { toast } from "react-hot-toast";
+import { PostComments, PostLikes, Posts } from "@prisma/client";
 
 const Home: NextPage = () => {
   const { data, isLoading } = api.posts.getAll.useQuery();
-
+  const { data: sessionData } = useSession();
   const ctx = api.useContext();
-  const { mutate, isLoading: isPosting } = api.postLikes.likedPost.useMutation({
-    onSuccess: (data) => {
-      console.log(data);
+  const { mutate: like, isLoading: isPosting } =
+    api.postLikes.likedPost.useMutation({
+      onSuccess: (data) => {
+        console.log(data);
 
-      void ctx.posts.getAll.invalidate();
-    },
-    onError: (err) => {
-      // const errorMessage = err.data?.zodError?.fieldErrors;
+        void ctx.posts.getAll.invalidate();
+      },
+      onError: (err) => {
+        toast.error("Something went wrong, try logging in");
 
-      console.log(err);
-    },
-  });
+        console.log(err);
+      },
+    });
+  const { mutate: dislike, isLoading: isUnliking } =
+    api.postLikes.unlikedPost.useMutation({
+      onSuccess: (data) => {
+        console.log(data);
+
+        void ctx.posts.getAll.invalidate();
+      },
+      onError: (err) => {
+        toast.error("Something went wrong, try logging in");
+
+        console.log(err);
+      },
+    });
+
+  const likeHandler = (
+    post: Posts & {
+      PostLikes: PostLikes[];
+      PostComments: PostComments[];
+    }
+  ) => {
+    const isLiked = post.PostLikes.find(
+      (like) => like.userId === sessionData?.user.id
+    );
+    if (isLiked) {
+      dislike({ postId: post.id });
+    } else {
+      like({ postId: post.id });
+    }
+  };
 
   if (isLoading) return <div>loading...</div>;
   if (!data) return <div>no data</div>;
@@ -62,9 +94,7 @@ const Home: NextPage = () => {
                   )}
                   {/* button for like  */}
                   <button
-                    onClick={() => {
-                      mutate({ postId: post.id });
-                    }}
+                    onClick={() => likeHandler(post)}
                     className="rounded-full font-semibold text-black no-underline transition"
                   >
                     Like:{post.PostLikes.length}

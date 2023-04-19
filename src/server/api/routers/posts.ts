@@ -19,6 +19,7 @@ export const postRouter = createTRPCRouter({
     return ctx.prisma.posts.findMany({
       include: {
         PostLikes: true,
+        PostComments: true,
       },
     });
   }),
