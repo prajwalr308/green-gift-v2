@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiComment } from "react-icons/bi";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -21,6 +21,23 @@ type Post = {
 
 const PostView = (props: Post) => {
   const { data: sessionData } = useSession();
+
+  const [isLiked, setIsLiked] = React.useState<boolean>(false);
+  useEffect(() => {
+    if (!props.post.PostLikes) return;
+    const post: Posts & {
+      PostLikes: PostLikes[];
+      PostComments: PostComments[];
+      author: User;
+    } = props.post;
+    if (!sessionData?.user.id) return;
+    if (!post.PostLikes) return;
+    const isLike =
+      post.PostLikes?.find((like) => like.userId === sessionData?.user.id) ||
+      false;
+    console.log("is like", isLike);
+    setIsLiked(isLike as boolean);
+  });
   const ctx = api.useContext();
   const { mutate: like, isLoading: isPosting } =
     api.postLikes.likedPost.useMutation({
@@ -60,11 +77,13 @@ const PostView = (props: Post) => {
     );
     if (isLiked) {
       dislike({ postId: post.id });
+      setIsLiked(false);
     } else {
       like({ postId: post.id });
+      setIsLiked(true);
     }
   };
-  console.log("🚀 ~ file: Post.tsx ~ props", props);
+
   if (!props.post) return <div>no data</div>;
   return (
     <div className="hover:bg-dark-lighter anim border-opacity-15 flex cursor-pointer border-b border-gray-100 p-3">
@@ -108,7 +127,8 @@ const PostView = (props: Post) => {
           <div className="flex flex-grow flex-wrap items-center">
             <div>
               <span className="text-gray-600">
-                {props.post.author.name} · {dayjs(props.post.createdAt).fromNow()}
+                {props.post.author.name} ·{" "}
+                {dayjs(props.post.createdAt).fromNow()}
               </span>
             </div>
           </div>
@@ -134,15 +154,15 @@ const PostView = (props: Post) => {
           </div>
         </div>
         <div className="mt-3 flex">
-          {!props.post.PostLikes?.find(
-            (like) => like.userId === sessionData?.user.id
-          ) ? (
+          {!isLiked ? (
             <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
               <AiOutlineHeart
                 className="mr-1"
                 onClick={() => likeHandler(props.post)}
               />
-              <span className="ml-3 text-xs">{props.post.PostLikes.length}</span>
+              <span className="ml-3 text-xs">
+                {props.post.PostLikes.length}
+              </span>
             </div>
           ) : (
             <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
@@ -150,7 +170,9 @@ const PostView = (props: Post) => {
                 className="mr-1"
                 onClick={() => likeHandler(props.post)}
               />
-              <span className="ml-3 text-xs">{props.post.PostLikes.length}</span>
+              <span className="ml-3 text-xs">
+                {props.post.PostLikes.length}
+              </span>
             </div>
           )}
 

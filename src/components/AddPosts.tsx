@@ -15,7 +15,6 @@ interface FormData {
   postTitle: string;
   postBody: string;
   image: File | null;
-  location: string;
 }
 const customStyles = {
   content: {
@@ -34,7 +33,6 @@ const AddPosts = (props: AddPostsProps) => {
     postTitle: "",
     postBody: "",
     image: null,
-    location: "",
   });
   const ctx = api.useContext();
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
@@ -44,7 +42,6 @@ const AddPosts = (props: AddPostsProps) => {
         postTitle: "",
         postBody: "",
         image: null,
-        location: "",
       });
       void ctx.posts.getAll.invalidate();
     },
@@ -120,7 +117,6 @@ const AddPosts = (props: AddPostsProps) => {
             content: formData.postBody,
             title: formData.postTitle,
             image: downloadURL,
-            location: formData.location,
           });
         });
       }
@@ -168,7 +164,7 @@ const AddPosts = (props: AddPostsProps) => {
               onChange={handleInputChange}
             ></textarea>
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="mb-2 block font-bold text-gray-700">
               location
             </label>
@@ -182,7 +178,7 @@ const AddPosts = (props: AddPostsProps) => {
               onChange={handleInputChange}
               disabled={isPosting}
             />
-          </div>
+          </div> */}
           <div className="mb-6">
             <label className="mb-2 block font-bold text-gray-700">Image</label>
             <input
