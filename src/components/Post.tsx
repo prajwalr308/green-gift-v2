@@ -40,10 +40,11 @@ const PostView = (props: Post) => {
   const ctx = api.useContext();
   const { mutate: like, isLoading: isPosting } =
     api.postLikes.likedPost.useMutation({
+      onMutate: (data) => {
+        setIsLiked(true);
+      },
       onSuccess: (data) => {
         console.log(data);
-        setIsLiked(true);
-        void ctx.posts.getAll.invalidate();
       },
       onError: (err) => {
         toast.error("Something went wrong, try logging in");
@@ -53,10 +54,11 @@ const PostView = (props: Post) => {
     });
   const { mutate: dislike, isLoading: isUnliking } =
     api.postLikes.unlikedPost.useMutation({
+      onMutate: (data) => {
+        setIsLiked(false);
+      },
       onSuccess: (data) => {
         console.log(data);
-        setIsLiked(false);
-        void ctx.posts.getAll.invalidate();
       },
       onError: (err) => {
         toast.error("Something went wrong, try logging in");
