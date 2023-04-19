@@ -110,7 +110,7 @@ const Home: NextPage = () => {
                       Like:{post.PostLikes.length}
                     </button>
                     <div>
-                      <Link href={`/posts/${post.id}`}>link</Link>
+                      <Link href={`/post/${post.id}`}>link</Link>
                     </div>
                   </div>
                 </div>
