@@ -40,9 +40,7 @@ const PostView = (props: Post) => {
   const ctx = api.useContext();
   const { mutate: like, isLoading: isPosting } =
     api.postLikes.likedPost.useMutation({
-      onMutate: (data) => {
-        setIsLiked(true);
-      },
+    
       onSuccess: (data) => {
         console.log(data);
       },
@@ -77,9 +75,13 @@ const PostView = (props: Post) => {
       (like) => like.userId === sessionData?.user.id
     );
     if (isLiked) {
+      setIsLiked(false);
       dislike({ postId: post.id });
+      
     } else {
+      setIsLiked(true);
       like({ postId: post.id });
+      
     }
   };
 
