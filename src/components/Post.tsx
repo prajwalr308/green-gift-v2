@@ -33,9 +33,7 @@ const PostView = (props: Post) => {
     if (!sessionData?.user.id) return;
     if (!post.PostLikes) return;
     const isLike =
-      post.PostLikes?.find((like) => like.userId === sessionData?.user.id) ||
-      false;
-    console.log("is like", isLike);
+      post.PostLikes?.find((like) => like.userId === sessionData?.user.id)
     if (isLike) setIsLiked(true);
   },[]);
   const ctx = api.useContext();
