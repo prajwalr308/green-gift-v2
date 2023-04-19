@@ -32,15 +32,18 @@ const PostView = (props: Post) => {
     } = props.post;
     if (!sessionData?.user.id) return;
     if (!post.PostLikes) return;
-    const isLike =
-      post.PostLikes?.find((like) => like.userId === sessionData?.user.id)
+    const isLike = post.PostLikes?.find(
+      (like) => like.userId === sessionData?.user.id
+    );
     if (isLike) setIsLiked(true);
-  },[]);
+  }, []);
   const ctx = api.useContext();
   const { mutate: like, isLoading: isPosting } =
     api.postLikes.likedPost.useMutation({
       onSuccess: (data) => {
         console.log(data);
+        setIsLiked(true);
+        void ctx.posts.getAll.invalidate();
       },
       onError: (err) => {
         toast.error("Something went wrong, try logging in");
@@ -52,6 +55,8 @@ const PostView = (props: Post) => {
     api.postLikes.unlikedPost.useMutation({
       onSuccess: (data) => {
         console.log(data);
+        setIsLiked(false);
+        void ctx.posts.getAll.invalidate();
       },
       onError: (err) => {
         toast.error("Something went wrong, try logging in");
@@ -71,10 +76,8 @@ const PostView = (props: Post) => {
     );
     if (isLiked) {
       dislike({ postId: post.id });
-      setIsLiked(false);
     } else {
       like({ postId: post.id });
-      setIsLiked(true);
     }
   };
 
