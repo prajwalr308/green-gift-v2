@@ -67,20 +67,7 @@ const PostById: NextPage<PageProps> = ({ postId }) => {
       </Head>
 
       <main className="flex justify-center">
-        <PostView
-          postId={undefined}
-          postTitle={data[0]?.title as string}
-          authorImage={data[0]?.author.image as string}
-          authorName={data[0]?.author.name as string}
-          postImage={data[0]?.image as string}
-          postContent={data[0]?.content as string}
-          postLikes={data[0]?.PostLikes.length as number}
-          postComments={data[0]?.PostComments}
-          postAuthorId={data[0]?.author.id as string}
-          postCreatedAt={data[0]?.createdAt as Date}
-          postUpdatedAt={data[0]?.updatedAt as Date}
-          post={data[0]!}
-        />
+        <PostView postId={undefined} post={data[0]!} />
       </main>
     </>
   );

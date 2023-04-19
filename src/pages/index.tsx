@@ -97,20 +97,9 @@ const Home: NextPage = () => {
                       <Link href={`/post/${post.id}`}>link</Link>
                     </div>
                   </div> */}
-                  <PostView
-                    postId={post.id}
-                    authorImage={post.author.image as string}
-                    authorName={post.author.name as string}
-                    postTitle={post.title}
-                    postContent={post.content}
-                    postAuthorId={post.authorId}
-                    postImage={post.image}
-                    postLikes={post.PostLikes.length}
-                    postComments={post.PostComments}
-                    postCreatedAt={post.createdAt}
-                    postUpdatedAt={post.updatedAt}
-                    post={post}
-                  />
+                  <PostView 
+                  postId={post.id}
+                  post={post} />
                 </div>
               ))}
             </div>

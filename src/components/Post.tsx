@@ -12,25 +12,11 @@ import { toast } from "react-hot-toast";
 dayjs.extend(relativeTime);
 type Post = {
   postId: string | undefined;
-  authorName: string;
-  authorImage: string;
-  postImage: string;
-  postTitle: string;
-  postContent: string;
-  postLikes: number;
-  postComments: unknown;
-  postAuthorId: string;
-  postCreatedAt: Date;
-  postUpdatedAt: Date;
-  post:
-    | (Posts & {
-        PostLikes: PostLikes[];
-        PostComments: PostComments[];
-      })
-    | (Posts & {
-        PostLikes: PostLikes[];
-        PostComments: PostComments[];
-      });
+  post: Posts & {
+    PostLikes: PostLikes[];
+    PostComments: PostComments[];
+    author: User;
+  };
 };
 
 const PostView = (props: Post) => {
@@ -63,16 +49,11 @@ const PostView = (props: Post) => {
       },
     });
   const likeHandler = (
-    post:
-      | (Posts & {
-          PostLikes: PostLikes[];
-          PostComments: PostComments[];
-          author: User;
-        })
-      | (Posts & {
-          PostLikes: PostLikes[];
-          PostComments: PostComments[];
-        })
+    post: Posts & {
+      PostLikes: PostLikes[];
+      PostComments: PostComments[];
+      author: User;
+    }
   ) => {
     const isLiked = post.PostLikes.find(
       (like) => like.userId === sessionData?.user.id
@@ -92,10 +73,10 @@ const PostView = (props: Post) => {
           <p className="h-12 w-12 flex-shrink-0 pt-1">
             <div className="relative">
               <div className="anim hover:bg-opacity-15 absolute bottom-0 left-0 right-0 top-0 z-10 rounded-full hover:bg-black"></div>
-              {props.authorImage && props.authorName && (
+              {props.post.author.image && props.post.author.name && (
                 <Image
-                  src={props.authorImage}
-                  alt={`${props.authorName}`}
+                  src={props.post.author.image}
+                  alt={`${props.post.author.name}`}
                   className="asd h-12 w-12 min-w-full rounded-full"
                   width={48}
                   height={48}
@@ -109,10 +90,10 @@ const PostView = (props: Post) => {
           <p className="h-12 w-12 flex-shrink-0 pt-1">
             <div className="relative">
               <div className="anim hover:bg-opacity-15 absolute bottom-0 left-0 right-0 top-0 z-10 rounded-full hover:bg-black"></div>
-              {props.authorImage && props.authorName && (
+              {props.post.author.image && props.post.author.name && (
                 <Image
-                  src={props.authorImage}
-                  alt={`${props.authorName}`}
+                  src={props.post.author.image}
+                  alt={`${props.post.author.name}`}
                   className="asd h-12 w-12 min-w-full rounded-full"
                   width={48}
                   height={48}
@@ -127,7 +108,7 @@ const PostView = (props: Post) => {
           <div className="flex flex-grow flex-wrap items-center">
             <div>
               <span className="text-gray-600">
-                {props.authorName} · {dayjs(props.postCreatedAt).fromNow()}
+                {props.post.author.name} · {dayjs(props.post.createdAt).fromNow()}
               </span>
             </div>
           </div>
@@ -138,13 +119,13 @@ const PostView = (props: Post) => {
         <div className="pr-1">
           <span
             className="text-sm leading-5 text-gray-500"
-            dangerouslySetInnerHTML={{ __html: props.postContent || "" }}
+            dangerouslySetInnerHTML={{ __html: props.post.content || "" }}
           ></span>
           <div className="mt-3 flex flex-wrap">
-            {props.postImage && (
+            {props.post.image && (
               <Image
-                src={props.postImage}
-                alt={`${props.postTitle}`}
+                src={props.post.image}
+                alt={`${props.post.title}`}
                 className="w-full"
                 width={298}
                 height={198}
@@ -161,7 +142,7 @@ const PostView = (props: Post) => {
                 className="mr-1"
                 onClick={() => likeHandler(props.post)}
               />
-              <span className="ml-3 text-xs">{props.postLikes}</span>
+              <span className="ml-3 text-xs">{props.post.PostLikes.length}</span>
             </div>
           ) : (
             <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
@@ -169,7 +150,7 @@ const PostView = (props: Post) => {
                 className="mr-1"
                 onClick={() => likeHandler(props.post)}
               />
-              <span className="ml-3 text-xs">{props.postLikes}</span>
+              <span className="ml-3 text-xs">{props.post.PostLikes.length}</span>
             </div>
           )}
 
