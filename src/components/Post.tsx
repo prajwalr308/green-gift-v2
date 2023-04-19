@@ -23,40 +23,25 @@ const PostView = (props: Post) => {
   const { data: sessionData } = useSession();
 
   const [isLiked, setIsLiked] = React.useState<boolean>(false);
-  useEffect(() => {
-    if (!props.post.PostLikes) return;
-    const post: Posts & {
-      PostLikes: PostLikes[];
-      PostComments: PostComments[];
-      author: User;
-    } = props.post;
-    if (!sessionData?.user.id) return;
-    if (!post.PostLikes) return;
-    const isLike = post.PostLikes?.find(
-      (like) => like.userId === sessionData?.user.id
-    );
-    if (isLike) setIsLiked(true);
-  }, []);
+
   const ctx = api.useContext();
   const { mutate: like, isLoading: isPosting } =
     api.postLikes.likedPost.useMutation({
-    
       onSuccess: (data) => {
         console.log(data);
+        void ctx.posts.getAll.invalidate();
       },
       onError: (err) => {
         toast.error("Something went wrong, try logging in");
-
-        console.log(err);
+        
       },
     });
   const { mutate: dislike, isLoading: isUnliking } =
     api.postLikes.unlikedPost.useMutation({
-      onMutate: (data) => {
-        setIsLiked(false);
-      },
+     
       onSuccess: (data) => {
         console.log(data);
+        void ctx.posts.getAll.invalidate();
       },
       onError: (err) => {
         toast.error("Something went wrong, try logging in");
@@ -75,13 +60,9 @@ const PostView = (props: Post) => {
       (like) => like.userId === sessionData?.user.id
     );
     if (isLiked) {
-      setIsLiked(false);
       dislike({ postId: post.id });
-      
     } else {
-      setIsLiked(true);
       like({ postId: post.id });
-      
     }
   };
 
@@ -155,7 +136,9 @@ const PostView = (props: Post) => {
           </div>
         </div>
         <div className="mt-3 flex">
-          {!isLiked ? (
+          {!props.post.PostLikes.find(
+            (like) => like.userId === sessionData?.user.id
+          ) ? (
             <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
               <AiOutlineHeart
                 className="mr-1"
