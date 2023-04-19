@@ -36,8 +36,9 @@ const PostView = (props: Post) => {
       post.PostLikes?.find((like) => like.userId === sessionData?.user.id) ||
       false;
     console.log("is like", isLike);
-    setIsLiked(isLike as boolean);
-  });
+    if (isLike === undefined) return;
+    if (isLike) setIsLiked(true);
+  },[]);
   const ctx = api.useContext();
   const { mutate: like, isLoading: isPosting } =
     api.postLikes.likedPost.useMutation({
