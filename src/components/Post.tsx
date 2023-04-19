@@ -13,7 +13,6 @@ type Post = {
   postContent: string;
   postLikes: number;
   postComments: unknown;
-  postDate: string;
   postAuthorId: string;
   postCreatedAt: Date;
   postUpdatedAt: Date;
