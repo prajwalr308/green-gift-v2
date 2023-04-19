@@ -5,7 +5,7 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiComment } from "react-icons/bi";
 
 type Post = {
-  postId: string;
+  postId: string | undefined;
   authorName: string;
   authorImage: string;
   postImage: string;
@@ -16,27 +16,30 @@ type Post = {
   postAuthorId: string;
   postCreatedAt: Date;
   postUpdatedAt: Date;
+  likeHandler: () => void | undefined;
 };
 
 const PostView = (props: Post) => {
   return (
     <div className="hover:bg-dark-lighter anim border-opacity-15 flex cursor-pointer border-b border-gray-100 p-3">
-      <Link href="/mhmdou1">
-        <p className="h-12 w-12 flex-shrink-0 pt-1">
-          <div className="relative">
-            <div className="anim hover:bg-opacity-15 absolute bottom-0 left-0 right-0 top-0 z-10 rounded-full hover:bg-black"></div>
-            {props.authorImage && props.authorName && (
-              <Image
-                src={props.authorImage}
-                alt={`${props.authorName}`}
-                className="asd h-12 w-12 min-w-full rounded-full"
-                width={48}
-                height={48}
-              />
-            )}
-          </div>
-        </p>
-      </Link>
+      {props.postId && (
+        <Link href={`/post/${props.postId}`}>
+          <p className="h-12 w-12 flex-shrink-0 pt-1">
+            <div className="relative">
+              <div className="anim hover:bg-opacity-15 absolute bottom-0 left-0 right-0 top-0 z-10 rounded-full hover:bg-black"></div>
+              {props.authorImage && props.authorName && (
+                <Image
+                  src={props.authorImage}
+                  alt={`${props.authorName}`}
+                  className="asd h-12 w-12 min-w-full rounded-full"
+                  width={48}
+                  height={48}
+                />
+              )}
+            </div>
+          </p>
+        </Link>
+      )}
       <div className="relative flex-grow px-3 pb-1">
         <div className="flex">
           <div className="flex flex-grow flex-wrap items-center">

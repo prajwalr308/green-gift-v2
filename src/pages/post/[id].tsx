@@ -10,6 +10,51 @@ const PostById: NextPage<PageProps> = ({ postId }) => {
   const { data, isLoading } = api.posts.getPostById.useQuery({
     postId: postId,
   });
+  const { data: sessionData } = useSession();
+  const ctx = api.useContext();
+  const { mutate: like, isLoading: isPosting } =
+    api.postLikes.likedPost.useMutation({
+      onSuccess: (data) => {
+        console.log(data);
+
+        void ctx.posts.getAll.invalidate();
+      },
+      onError: (err) => {
+        toast.error("Something went wrong, try logging in");
+
+        console.log(err);
+      },
+    });
+  const { mutate: dislike, isLoading: isUnliking } =
+    api.postLikes.unlikedPost.useMutation({
+      onSuccess: (data) => {
+        console.log(data);
+
+        void ctx.posts.getAll.invalidate();
+      },
+      onError: (err) => {
+        toast.error("Something went wrong, try logging in");
+
+        console.log(err);
+      },
+    });
+
+  const likeHandler = (
+    post: Posts & {
+      PostLikes: PostLikes[];
+      PostComments: PostComments[];
+      author: User;
+    }
+  ) => {
+    const isLiked = post.PostLikes.find(
+      (like) => like.userId === sessionData?.user.id
+    );
+    if (isLiked) {
+      dislike({ postId: post.id });
+    } else {
+      like({ postId: post.id });
+    }
+  };
   console.log("🚀 ~ file: [id].tsx:24 ~ data:", data);
   if (isLoading) return <div>loading...</div>;
   if (!data) return <div>Not found</div>;
@@ -32,6 +77,7 @@ const PostById: NextPage<PageProps> = ({ postId }) => {
           postAuthorId={data[0]?.author.id as string}
           postCreatedAt={data[0]?.createdAt as Date}
           postUpdatedAt={data[0]?.updatedAt as Date}
+          likeHandler={() => likeHandler(data[0]!)}
         />
       </main>
     </>
@@ -45,6 +91,9 @@ import SuperJSON from "superjson";
 import Image from "next/image";
 import Link from "next/link";
 import PostView from "~/components/Post";
+import { toast } from "react-hot-toast";
+import { PostComments, PostLikes, Posts, User } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 export const getStaticProps: GetStaticProps<{ postId: string }> = async (
   context

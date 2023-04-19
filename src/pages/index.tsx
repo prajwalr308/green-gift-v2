@@ -10,6 +10,7 @@ import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { PostComments, PostLikes, Posts } from "@prisma/client";
 import Sidebar from "~/components/SideBar";
+import PostView from "~/components/Post";
 
 const Home: NextPage = () => {
   const { data, isLoading } = api.posts.getAll.useQuery();
@@ -46,6 +47,7 @@ const Home: NextPage = () => {
     post: Posts & {
       PostLikes: PostLikes[];
       PostComments: PostComments[];
+      
     }
   ) => {
     const isLiked = post.PostLikes.find(
@@ -72,7 +74,7 @@ const Home: NextPage = () => {
         <div className="flex w-full">
           <div className="w-1/10 flex-grow"></div>
           <div className="w-2/10 flex-grow">
-          <Sidebar />
+            <Sidebar />
           </div>
           <div className="w-4/10 flex-grow">
             <div className="flex ">
@@ -85,7 +87,7 @@ const Home: NextPage = () => {
                   key={post.id}
                   className="flex  justify-center rounded-lg bg-white shadow-md"
                 >
-                  <div className="p-4">
+                  {/* <div className="p-4">
                     <div className="mb-2 font-bold">Title: {post.title}</div>
                     <div className="mb-4">desc: {post.content}</div>
                     <div className="mb-2 text-sm text-gray-500">
@@ -102,7 +104,6 @@ const Home: NextPage = () => {
                         />
                       </div>
                     )}
-                    {/* button for like  */}
                     <button
                       onClick={() => likeHandler(post)}
                       className="rounded-full font-semibold text-black no-underline transition"
@@ -112,7 +113,21 @@ const Home: NextPage = () => {
                     <div>
                       <Link href={`/post/${post.id}`}>link</Link>
                     </div>
-                  </div>
+                  </div> */}
+                  <PostView
+                    postId={post.id}
+                    authorImage={post.author.image as string}
+                    authorName={post.author.name as string}
+                    postTitle={post.title}
+                    postContent={post.content}
+                    postAuthorId={post.authorId}
+                    postImage={post.image}
+                    postLikes={post.PostLikes.length}
+                    postComments={post.PostComments}
+                    postCreatedAt={post.createdAt}
+                    postUpdatedAt={post.updatedAt}
+                    likeHandler={() => likeHandler(post)}
+                  />
                 </div>
               ))}
             </div>
