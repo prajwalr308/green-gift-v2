@@ -150,9 +150,9 @@ const PostView = (props: Post) => {
                 className="mr-1"
                 onClick={() => likeHandler(props.post)}
               />
-              <span className="ml-3 text-xs">
+              {/* <span className="ml-3 text-xs">
                 {props.post.PostLikes.length}
-              </span>
+              </span> */}
             </div>
           ) : (
             <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
@@ -160,9 +160,9 @@ const PostView = (props: Post) => {
                 className="mr-1"
                 onClick={() => likeHandler(props.post)}
               />
-              <span className="ml-3 text-xs">
+              {/* <span className="ml-3 text-xs">
                 {props.post.PostLikes.length}
-              </span>
+              </span> */}
             </div>
           )}
 
