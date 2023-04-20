@@ -21,9 +21,11 @@ type Post = {
 
 const PostView = (props: Post) => {
   const { data: sessionData } = useSession();
-  const isPostLiked = props.post.PostLikes.find((like) =>
-    like.userId === sessionData?.user.id ? true : false
-  );
+  const isPostLiked = props.post.PostLikes?.find(
+    (like) => like.userId === sessionData?.user.id
+  )
+    ? true
+    : false;
   const [isLiked, setIsLiked] = React.useState<boolean>(isPostLiked);
 
   const ctx = api.useContext();
