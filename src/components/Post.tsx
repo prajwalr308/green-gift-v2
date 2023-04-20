@@ -21,11 +21,13 @@ type Post = {
 
 const PostView = (props: Post) => {
   const { data: sessionData } = useSession();
-
-  const [isLiked, setIsLiked] = React.useState<boolean>(false);
+  const isPostLiked = props.post.PostLikes.find((like) =>
+    like.userId === sessionData?.user.id ? true : false
+  );
+  const [isLiked, setIsLiked] = React.useState<boolean>(isPostLiked);
 
   const ctx = api.useContext();
-  const { mutate: like, isLoading: isPosting } =
+  const { mutateAsync: like, isLoading: isPosting } =
     api.postLikes.likedPost.useMutation({
       onSuccess: (data) => {
         console.log(data);
@@ -33,12 +35,10 @@ const PostView = (props: Post) => {
       },
       onError: (err) => {
         toast.error("Something went wrong, try logging in");
-        
       },
     });
-  const { mutate: dislike, isLoading: isUnliking } =
+  const { mutateAsync: dislike, isLoading: isUnliking } =
     api.postLikes.unlikedPost.useMutation({
-     
       onSuccess: (data) => {
         console.log(data);
         void ctx.posts.getAll.invalidate();
@@ -60,9 +60,15 @@ const PostView = (props: Post) => {
       (like) => like.userId === sessionData?.user.id
     );
     if (isLiked) {
-      dislike({ postId: post.id });
+      void dislike({ postId: post.id }).catch((err) => {
+        console.log(err);
+      });
+      setIsLiked(false);
     } else {
-      like({ postId: post.id });
+      void like({ postId: post.id }).catch((err) => {
+        console.log(err);
+      });
+      setIsLiked(true);
     }
   };
 
@@ -136,9 +142,7 @@ const PostView = (props: Post) => {
           </div>
         </div>
         <div className="mt-3 flex">
-          {!props.post.PostLikes.find(
-            (like) => like.userId === sessionData?.user.id
-          ) ? (
+          {!isLiked ? (
             <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
               <AiOutlineHeart
                 className="mr-1"
