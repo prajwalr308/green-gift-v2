@@ -65,12 +65,12 @@ const PostView = (props: Post) => {
       void dislike({ postId: post.id }).catch((err) => {
         console.log(err);
       });
-      setIsLiked(false);
+      setIsLiked((prevState) => !prevState);
     } else {
       void like({ postId: post.id }).catch((err) => {
         console.log(err);
       });
-      setIsLiked(true);
+      setIsLiked((prevState) => !prevState);
     }
   };
 
