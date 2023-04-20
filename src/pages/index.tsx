@@ -6,42 +6,12 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import Image from "next/image";
 import AddPosts from "~/components/AddPosts";
-import React, { useEffect } from "react";
-import { toast } from "react-hot-toast";
-import { PostComments, PostLikes, Posts } from "@prisma/client";
+import React from "react";
 import Sidebar from "~/components/SideBar";
 import PostView from "~/components/Post";
 
 const Home: NextPage = () => {
   const { data, isLoading } = api.posts.getAll.useQuery();
-  const { data: sessionData } = useSession();
-  const ctx = api.useContext();
-  const { mutate: like, isLoading: isPosting } =
-    api.postLikes.likedPost.useMutation({
-      onSuccess: (data) => {
-        console.log(data);
-
-        void ctx.posts.getAll.invalidate();
-      },
-      onError: (err) => {
-        toast.error("Something went wrong, try logging in");
-
-        console.log(err);
-      },
-    });
-  const { mutate: dislike, isLoading: isUnliking } =
-    api.postLikes.unlikedPost.useMutation({
-      onSuccess: (data) => {
-        console.log(data);
-
-        void ctx.posts.getAll.invalidate();
-      },
-      onError: (err) => {
-        toast.error("Something went wrong, try logging in");
-
-        console.log(err);
-      },
-    });
 
   if (isLoading) return <div>loading...</div>;
   if (!data) return <div>no data</div>;
@@ -97,9 +67,7 @@ const Home: NextPage = () => {
                       <Link href={`/post/${post.id}`}>link</Link>
                     </div>
                   </div> */}
-                  <PostView 
-                  postId={post.id}
-                  post={post} />
+                  <PostView postId={post.id} post={post} />
                 </div>
               ))}
             </div>

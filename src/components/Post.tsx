@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiComment } from "react-icons/bi";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -29,28 +29,27 @@ const PostView = (props: Post) => {
   const [isLiked, setIsLiked] = React.useState<boolean>(isPostLiked);
 
   const ctx = api.useContext();
-  const { mutateAsync: like, isLoading: isPosting } =
-    api.postLikes.likedPost.useMutation({
-      onSuccess: (data) => {
-        console.log(data);
-        void ctx.posts.getAll.invalidate();
-      },
-      onError: (err) => {
-        toast.error("Something went wrong, try logging in");
-      },
-    });
-  const { mutateAsync: dislike, isLoading: isUnliking } =
-    api.postLikes.unlikedPost.useMutation({
-      onSuccess: (data) => {
-        console.log(data);
-        void ctx.posts.getAll.invalidate();
-      },
-      onError: (err) => {
-        toast.error("Something went wrong, try logging in");
+  const { mutateAsync: like } = api.postLikes.likedPost.useMutation({
+    onSuccess: (data) => {
+      console.log(data);
+      void ctx.posts.getAll.invalidate();
+    },
+    onError: (err) => {
+      console.log(err);
+      toast.error("Something went wrong, try logging in");
+    },
+  });
+  const { mutateAsync: dislike } = api.postLikes.unlikedPost.useMutation({
+    onSuccess: (data) => {
+      console.log(data);
+      void ctx.posts.getAll.invalidate();
+    },
+    onError: (err) => {
+      toast.error("Something went wrong, try logging in");
 
-        console.log(err);
-      },
-    });
+      console.log(err);
+    },
+  });
   const likeHandler = (
     post: Posts & {
       PostLikes: PostLikes[];
@@ -168,9 +167,9 @@ const PostView = (props: Post) => {
 
           <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
             <BiComment className="mr-1" />
-            <span className="ml-3 text-xs">
-              {/* {data[0]?.PostLikes.length} */}
-            </span>
+            {/* <span className="ml-3 text-xs">
+             
+            </span> */}
           </div>
         </div>
       </div>

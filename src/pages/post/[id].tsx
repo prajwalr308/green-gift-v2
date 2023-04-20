@@ -1,8 +1,6 @@
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
 import Head from "next/head";
 import { api } from "~/utils/api";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { BiComment } from "react-icons/bi";
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -10,54 +8,6 @@ const PostById: NextPage<PageProps> = ({ postId }) => {
   const { data, isLoading } = api.posts.getPostById.useQuery({
     postId: postId,
   });
-  const { data: sessionData } = useSession();
-  const ctx = api.useContext();
-  const { mutate: like, isLoading: isPosting } =
-    api.postLikes.likedPost.useMutation({
-      onSuccess: (data) => {
-        console.log(data);
-
-        void ctx.posts.getAll.invalidate();
-      },
-      onError: (err) => {
-        toast.error("Something went wrong, try logging in");
-
-        console.log(err);
-      },
-    });
-  const { mutate: dislike, isLoading: isUnliking } =
-    api.postLikes.unlikedPost.useMutation({
-      onSuccess: (data) => {
-        console.log(data);
-
-        void ctx.posts.getAll.invalidate();
-      },
-      onError: (err) => {
-        toast.error("Something went wrong, try logging in");
-
-        console.log(err);
-      },
-    });
-
-  const likeHandler = (
-    post: Posts & {
-      PostLikes: PostLikes[];
-      PostComments: PostComments[];
-      author: User;
-    }
-  ) => {
-    const isLiked = post.PostLikes.find(
-      (like) => like.userId === sessionData?.user.id
-    );
-    if (isLiked) {
-      dislike({ postId: post.id });
-      return false;
-    } else {
-      like({ postId: post.id });
-      return true;
-    }
-  };
-  console.log("🚀 ~ file: [id].tsx:24 ~ data:", data);
   if (isLoading) return <div>loading...</div>;
   if (!data) return <div>Not found</div>;
   return (
