@@ -27,12 +27,7 @@ import { createServerSideHelpers } from "@trpc/react-query/server";
 import { appRouter } from "~/server/api/root";
 import { prisma } from "~/server/db";
 import SuperJSON from "superjson";
-import Image from "next/image";
-import Link from "next/link";
 import PostView from "~/components/Post";
-import { toast } from "react-hot-toast";
-import { PostComments, PostLikes, Posts, User } from "@prisma/client";
-import { useSession } from "next-auth/react";
 
 export const getStaticProps: GetStaticProps<{ postId: string }> = async (
   context
