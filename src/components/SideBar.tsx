@@ -1,13 +1,15 @@
 // components/Sidebar.js
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Sidebar = () => {
   const router = useRouter();
+  const { data: session } = useSession();
 
   const menuItems = [
     { name: "Home", href: "/" },
-    { name: "Profile", href: "/profile" },
+    { name: "Profile", href: `/${session?.user.id as string}` },
     { name: "Messages", href: "/messages" },
     { name: "Notifications", href: "/notifications" },
   ];

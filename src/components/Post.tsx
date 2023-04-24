@@ -78,12 +78,12 @@ const PostView = (props: Post) => {
   if (!props.post) return <div>no data</div>;
   return (
     <div className="hover:bg-dark-lighter anim border-opacity-15 flex cursor-pointer border-b border-gray-100 p-3">
-      {props.postId ? (
-        <Link href={`/post/${props.postId}` || ""}>
-          <div className="h-12 w-12 flex-shrink-0 pt-1">
-            <div className="relative">
-              <div className="anim hover:bg-opacity-15 absolute bottom-0 left-0 right-0 top-0 z-10 rounded-full hover:bg-black"></div>
-              {props.post.author.image && props.post.author.name && (
+      {props.post && (
+        <div className="h-12 w-12 flex-shrink-0 pt-1">
+          <div className="relative">
+            <div className="anim hover:bg-opacity-15 absolute bottom-0 left-0 right-0 top-0 z-10 rounded-full hover:bg-sky-200"></div>
+            {props.post.author.image && props.post.author.name && (
+              <Link href={`/${props.post.authorId}` || ""}>
                 <Image
                   src={props.post.author.image}
                   alt={`${props.post.author.name}`}
@@ -91,93 +91,84 @@ const PostView = (props: Post) => {
                   width={48}
                   height={48}
                 />
-              )}
-            </div>
-          </div>
-        </Link>
-      ) : (
-        <div>
-          <div className="h-12 w-12 flex-shrink-0 pt-1">
-            <div className="relative">
-              <div className="anim hover:bg-opacity-15 absolute bottom-0 left-0 right-0 top-0 z-10 rounded-full hover:bg-black"></div>
-              {props.post.author.image && props.post.author.name && (
-                <Image
-                  src={props.post.author.image}
-                  alt={`${props.post.author.name}`}
-                  className="asd h-12 w-12 min-w-full rounded-full"
-                  width={48}
-                  height={48}
-                />
-              )}
-            </div>
+              </Link>
+            )}
           </div>
         </div>
       )}
       <div className="relative flex-grow px-3 pb-1">
-        <div className="flex">
-          <div className="flex flex-grow flex-wrap items-center">
-            <div>
-              <span className="text-gray-600">
-                {props.post.author.name} ·{" "}
-                {dayjs(props.post.createdAt).fromNow()}
-              </span>
+        {props.post.id && (
+          <Link href={`/post/${props.post.id}` || ""}>
+            <div className="flex">
+              <div className="flex flex-grow flex-wrap items-center">
+                <div>
+                  <span className="text-gray-600">
+                    {props.post.author.name} ·{" "}
+                    {dayjs(props.post.createdAt).fromNow()}
+                  </span>
+                </div>
+              </div>
+              <button className="anim hover:bg-primary hover:bg-opacity-15 rounded-full px-1 py-1 text-white focus:bg-opacity-50 focus:outline-none">
+                {/* <ArrowDown height="1rem" /> */}
+              </button>
             </div>
-          </div>
-          <button className="anim hover:bg-primary hover:bg-opacity-15 rounded-full px-1 py-1 text-white focus:bg-opacity-50 focus:outline-none">
-            {/* <ArrowDown height="1rem" /> */}
-          </button>
-        </div>
-        <div className="pr-1">
-          <span
-            className="text-sm leading-5 text-gray-500"
-            dangerouslySetInnerHTML={{ __html: props.post.content || "" }}
-          ></span>
-          <div className="mt-3 flex flex-wrap">
-            {props.post.image && (
-              <Image
-                src={props.post.image}
-                alt={`${props.post.title}`}
-                className="w-full"
-                width={298}
-                height={198}
-              />
-            )}
-          </div>
-        </div>
-        <div className="mt-3 flex">
-          {!isLiked ? (
-            <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
-              <AiOutlineHeart
-                className="mr-1"
-                onClick={() => likeHandler(props.post)}
-              />
-              {/* <span className="ml-3 text-xs">
+            <div className="pr-1">
+              <span
+                className="text-sm leading-5 text-gray-500"
+                dangerouslySetInnerHTML={{ __html: props.post.content || "" }}
+              ></span>
+              <div className="mt-3 flex flex-wrap">
+                {props.post.image && (
+                  <Image
+                    src={props.post.image}
+                    alt={`${props.post.title}`}
+                    className="w-full"
+                    width={298}
+                    height={198}
+                  />
+                )}
+              </div>
+            </div>
+            <div className="mt-3 flex">
+              {!isLiked ? (
+                <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
+                  <AiOutlineHeart
+                    className="mr-1"
+                    onClick={() => likeHandler(props.post)}
+                  />
+                  {/* <span className="ml-3 text-xs">
                 {props.post.PostLikes.length}
               </span> */}
-            </div>
-          ) : (
-            <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
-              <AiFillHeart
-                className="mr-1"
-                onClick={() => likeHandler(props.post)}
-              />
-              {/* <span className="ml-3 text-xs">
+                </div>
+              ) : (
+                <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
+                  <AiFillHeart
+                    className="mr-1"
+                    color="#FF3777"
+                    onClick={() => likeHandler(props.post)}
+                  />
+                  {/* <span className="ml-3 text-xs">
                 {props.post.PostLikes.length}
               </span> */}
-            </div>
-          )}
+                </div>
+              )}
 
-          <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
-            <BiComment className="mr-1" onClick={() => setIsCommenting(true)} />
-            {/* <span className="ml-3 text-xs">
+              <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
+                <BiComment
+                  className="mr-1"
+                  onClick={() => setIsCommenting(true)}
+                />
+                {/* <span className="ml-3 text-xs">
              
             </span> */}
-          </div>
-        </div>
-        {(isCommenting && props.post.id) && (
-          <div>
-            <CommentInput postId={props.post.id} />
-          </div>
+              </div>
+            </div>
+            {isCommenting && props.post.id && (
+              <div>
+                <CommentInput postId={props.post.id} />
+              </div>
+            )}
+          </Link>
         )}
       </div>
     </div>

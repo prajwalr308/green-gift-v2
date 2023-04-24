@@ -21,11 +21,18 @@ const ProfilePage: NextPage<PageProps> = ({ userId }) => {
       </Head>
 
       <main className="flex justify-center">
+     
         <div className="w-full md:max-w-3xl">
+       
           <div className="min-h-screen">
+          
             <div className="container mx-auto">
               <div className="relative">
-                <div className="h-48 bg-blue-500"></div>
+                <div className="h-48 bg-blue-500">
+                <Link href="/" className="mt-4">
+          <AiOutlineArrowLeft size={30} color="white" />
+        </Link>
+                </div>
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform">
                   {typeof data.image == "string" &&
                     typeof data.name === "string" && (
@@ -74,6 +81,8 @@ import { appRouter } from "~/server/api/root";
 import { prisma } from "~/server/db";
 import SuperJSON from "superjson";
 import Image from "next/image";
+import Link from "next/link";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 export const getStaticProps: GetStaticProps<{ userId: string }> = async (
   context
