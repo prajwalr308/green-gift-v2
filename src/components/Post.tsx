@@ -158,7 +158,7 @@ const PostView = (props: Post) => {
           )}
 
           <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
-            <BiComment className="mr-1" onClick={() => setIsCommenting(true)} />
+            <BiComment className="mr-1" onClick={() => setIsCommenting(!isCommenting)} />
             {/* <span className="ml-3 text-xs">
              
             </span> */}
