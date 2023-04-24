@@ -6,7 +6,7 @@ import {
   protectedProcedure,
 } from "~/server/api/trpc";
 
-export const postLikesRouter = createTRPCRouter({
+export const postComments = createTRPCRouter({
   commentedOnPost: protectedProcedure
     .input(
       z.object({

@@ -1,7 +1,10 @@
+import dayjs from "dayjs";
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
 import Head from "next/head";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { api } from "~/utils/api";
 
+dayjs.extend(relativeTime);
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 const PostById: NextPage<PageProps> = ({ postId }) => {
@@ -17,7 +20,23 @@ const PostById: NextPage<PageProps> = ({ postId }) => {
       </Head>
 
       <main className="flex justify-center">
-        <PostView postId={undefined} post={data[0]!} />
+        <Link href="/" className="mt-4">
+          <AiOutlineArrowLeft size={20} />
+        </Link>
+        {data[0] && ( // <-- this is the fix
+          <div>
+            <PostView postId={undefined} post={data[0]} />
+            {data[0].PostComments.map((comment) => (
+              <div key={comment.id} className="flex justify-around">
+                <div>
+                  <div>{comment.user.name}</div>
+                  <div>{comment.content}</div>
+                </div>
+                <div>{dayjs(comment.createdAt).fromNow()}</div>
+              </div>
+            ))}
+          </div>
+        )}
       </main>
     </>
   );
@@ -28,6 +47,8 @@ import { appRouter } from "~/server/api/root";
 import { prisma } from "~/server/db";
 import SuperJSON from "superjson";
 import PostView from "~/components/Post";
+import Link from "next/link";
+import { AiFillCaretLeft, AiOutlineArrowLeft } from "react-icons/ai";
 
 export const getStaticProps: GetStaticProps<{ postId: string }> = async (
   context

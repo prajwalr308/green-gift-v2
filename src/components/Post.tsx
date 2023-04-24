@@ -9,6 +9,7 @@ import type { PostComments, PostLikes, Posts, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
+import CommentInput from "./CommentInput";
 dayjs.extend(relativeTime);
 type Post = {
   postId: string | undefined;
@@ -27,6 +28,7 @@ const PostView = (props: Post) => {
     ? true
     : false;
   const [isLiked, setIsLiked] = React.useState<boolean>(isPostLiked);
+  const [isCommenting, setIsCommenting] = React.useState<boolean>(false);
 
   const ctx = api.useContext();
   const { mutateAsync: like } = api.postLikes.likedPost.useMutation({
@@ -166,12 +168,17 @@ const PostView = (props: Post) => {
           )}
 
           <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
-            <BiComment className="mr-1" />
+            <BiComment className="mr-1" onClick={() => setIsCommenting(true)} />
             {/* <span className="ml-3 text-xs">
              
             </span> */}
           </div>
         </div>
+        {(isCommenting && props.post.id) && (
+          <div>
+            <CommentInput postId={props.post.id} />
+          </div>
+        )}
       </div>
     </div>
   );
