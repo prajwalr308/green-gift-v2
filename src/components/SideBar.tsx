@@ -13,7 +13,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <nav className="min-h-screen  bg-gray-100 p-4">
+    <nav className="h-screen p-4">
       <ul className="menu-items">
         {menuItems.map((item) => (
           <li

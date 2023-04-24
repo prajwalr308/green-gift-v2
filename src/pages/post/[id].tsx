@@ -29,10 +29,11 @@ const PostById: NextPage<PageProps> = ({ postId }) => {
             {data[0].PostComments.map((comment) => (
               <div key={comment.id} className="flex justify-around">
                 <div>
-                  <div>{comment.user.name}</div>
+                  <div className="text-gray-600 text-sm">{comment.user.name} ·{" "}
+                {dayjs(comment.createdAt).fromNow()}</div>
                   <div>{comment.content}</div>
                 </div>
-                <div>{dayjs(comment.createdAt).fromNow()}</div>
+                <div className="text-gray-600"></div>
               </div>
             ))}
           </div>
