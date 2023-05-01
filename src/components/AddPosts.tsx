@@ -43,6 +43,7 @@ const AddPosts = (props: AddPostsProps) => {
         postBody: "",
         image: null,
       });
+      toast.success("Post created successfully");
       void ctx.posts.getAll.invalidate();
     },
     onError: (err) => {
@@ -118,6 +119,8 @@ const AddPosts = (props: AddPostsProps) => {
             title: formData.postTitle,
             image: downloadURL,
           });
+          props.closeModal();
+          
         });
       }
     );
