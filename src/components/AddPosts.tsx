@@ -14,6 +14,7 @@ interface AddPostsProps {
 interface FormData {
   postTitle: string;
   postBody: string;
+  location: string;
   image: File | null;
 }
 const customStyles = {
@@ -32,6 +33,7 @@ const AddPosts = (props: AddPostsProps) => {
   const [formData, setFormData] = useState<FormData>({
     postTitle: "",
     postBody: "",
+    location: "",
     image: null,
   });
   const ctx = api.useContext();
@@ -41,6 +43,7 @@ const AddPosts = (props: AddPostsProps) => {
       setFormData({
         postTitle: "",
         postBody: "",
+        location: "",
         image: null,
       });
       toast.success("Post created successfully");
@@ -117,6 +120,7 @@ const AddPosts = (props: AddPostsProps) => {
           mutate({
             content: formData.postBody,
             title: formData.postTitle,
+            location: formData.location,
             image: downloadURL,
           });
           props.closeModal();
@@ -140,7 +144,7 @@ const AddPosts = (props: AddPostsProps) => {
         >
           <div className="mb-4">
             <label className="mb-2 block font-bold text-gray-700">
-              Post Title
+              Item
             </label>
             <input
               className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
@@ -155,7 +159,7 @@ const AddPosts = (props: AddPostsProps) => {
           </div>
           <div className="mb-6">
             <label className="mb-2 block font-bold text-gray-700">
-              Post Body
+              description
             </label>
             <textarea
               className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
@@ -167,7 +171,7 @@ const AddPosts = (props: AddPostsProps) => {
               onChange={handleInputChange}
             ></textarea>
           </div>
-          {/* <div className="mb-4">
+          <div className="mb-4">
             <label className="mb-2 block font-bold text-gray-700">
               location
             </label>
@@ -181,7 +185,7 @@ const AddPosts = (props: AddPostsProps) => {
               onChange={handleInputChange}
               disabled={isPosting}
             />
-          </div> */}
+          </div>
           <div className="mb-6">
             <label className="mb-2 block font-bold text-gray-700">Image</label>
             <input

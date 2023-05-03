@@ -114,10 +114,18 @@ const PostView = (props: Post) => {
                 </button>
               </div>
               <div className="pr-1">
-                <span
+                <div className="text-sm leading-5 font-semibold text-gray-900">
+                  {props.post.title}
+                </div>
+                <div className="text-sm leading-5 text-gray-500">
+                  location: {props.post.location}
+                </div>
+                <div
                   className="text-sm leading-5 text-gray-500"
-                  dangerouslySetInnerHTML={{ __html: props.post.content || "" }}
-                ></span>
+                  
+                >
+                  desc: {props.post.content}
+                </div>
                 <div className="mt-3 flex flex-wrap">
                   {props.post.image && (
                     <Image

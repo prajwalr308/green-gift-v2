@@ -54,6 +54,7 @@ export const postRouter = createTRPCRouter({
       z.object({
         title: z.string().min(4),
         content: z.string().min(4),
+        location: z.string().min(4),
         image: z.string().url(),
       })
     )
@@ -65,6 +66,7 @@ export const postRouter = createTRPCRouter({
             title: input.title,
             content: input.content,
             image: input.image,
+            location: input.location,
             authorId: author.id,
           },
         });
