@@ -4,7 +4,7 @@ import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import { storage } from "../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-
+import Resizer from "react-image-file-resizer";
 interface AddPostsProps {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -94,39 +94,61 @@ const AddPosts = (props: AddPostsProps) => {
     }
   };
 
+  const resizeFile = (file: File) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        480,
+        640,
+        "JPEG",
+        90,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "file"
+      );
+    });
+  const resizeImage = async (file: File) => {
+    const image = await resizeFile(file);
+    return image;
+  };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Perform any necessary actions with the form data
     const file = formData.image;
     if (!file) return;
-    const storageRef = ref(storage, `files/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgresspercent(progress);
-      },
-      (error) => {
-        alert(error);
-      },
-      () => {
-        void getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImgUrl(downloadURL);
-          mutate({
-            content: formData.postBody,
-            title: formData.postTitle,
-            location: formData.location,
-            image: downloadURL,
+    void resizeImage(file).then((image) => {
+      const storageRef = ref(storage, `files/${file.name}`);
+      const uploadTask = uploadBytesResumable(
+        storageRef,
+        image as Blob | Uint8Array | ArrayBuffer
+      );
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgresspercent(progress);
+        },
+        (error) => {
+          alert(error);
+        },
+        () => {
+          void getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImgUrl(downloadURL);
+            mutate({
+              content: formData.postBody,
+              title: formData.postTitle,
+              location: formData.location,
+              image: downloadURL,
+            });
+            props.closeModal();
           });
-          props.closeModal();
-          
-        });
-      }
-    );
+        }
+      );
+    });
   };
 
   return (
@@ -142,9 +164,7 @@ const AddPosts = (props: AddPostsProps) => {
           onSubmit={handleSubmit}
         >
           <div className="mb-4">
-            <label className="mb-2 block font-bold text-gray-700">
-              Item
-            </label>
+            <label className="mb-2 block font-bold text-gray-700">Item</label>
             <input
               className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
               id="postTitle"
