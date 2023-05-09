@@ -9,12 +9,10 @@ const CommentInput = (props: CommentInputProps) => {
   const [comment, setComment] = React.useState<string>("");
   const ctx = api.useContext();
   const { mutate } = api.postComments.commentedOnPost.useMutation({
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       void ctx.posts.getAll.invalidate();
     },
-    onError: (err) => {
-      console.log(err);
+    onError: () => {
       toast.error("Something went wrong, try logging in");
     },
   });

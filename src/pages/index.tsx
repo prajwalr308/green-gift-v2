@@ -15,7 +15,6 @@ const Home: NextPage = () => {
 
   if (isLoading) return <div>loading...</div>;
   if (!data) return <div>no data</div>;
-  console.log(data);
   return (
     <>
       <Head>

@@ -39,7 +39,6 @@ const AddPosts = (props: AddPostsProps) => {
   const ctx = api.useContext();
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSuccess: (data) => {
-      console.log(data);
       setFormData({
         postTitle: "",
         postBody: "",
