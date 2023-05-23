@@ -24,56 +24,24 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex">
         <div className="flex w-full">
-          <div className="w-1/6 "></div>
           <div className="w-1/6">
             <Sidebar />
           </div>
-          <div className="w-3/6">
+          <div className="w-4/6">
             <div className="flex ">
               <Navbar />
             </div>
             {/* <div className="flex"> */}
-            <div className="">
+            <div className="grid grid-cols-3 gap-4">
               {data?.map((post) => (
-                <div
-                  key={post.id}
-                  className="flex  justify-center rounded-lg bg-white shadow-md"
-                >
-                  {/* <div className="p-4">
-                    <div className="mb-2 font-bold">Title: {post.title}</div>
-                    <div className="mb-4">desc: {post.content}</div>
-                    <div className="mb-2 text-sm text-gray-500">
-                      Location: {post.location}
-                    </div>
-                    {post.image && (
-                      <div className="mb-4 flex justify-center">
-                        <Image
-                          src={post.image}
-                          alt="profile"
-                          width={700}
-                          height={298}
-                          className="rounded-lg shadow-md"
-                        />
-                      </div>
-                    )}
-                    <button
-                      onClick={() => likeHandler(post)}
-                      className="rounded-full font-semibold text-black no-underline transition"
-                    >
-                      Like:{post.PostLikes.length}
-                    </button>
-                    <div>
-                      <Link href={`/post/${post.id}`}>link</Link>
-                    </div>
-                  </div> */}
+                <div key={post.id} className="rounded-lg bg-white shadow-md">
                   <PostView postId={post.id} post={post} />
                 </div>
               ))}
             </div>
             {/* </div> */}
           </div>
-          <div className="w-2/6"></div>
-         
+          <div className="w-1/6"></div>
         </div>
       </main>
     </>
