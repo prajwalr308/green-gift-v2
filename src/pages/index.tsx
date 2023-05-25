@@ -27,7 +27,7 @@ const Home: NextPage = () => {
           <div className="w-1/6">
             <Sidebar />
           </div>
-          <div className="w-4/6">
+          <div className="mr-5">
             <div className="flex ">
               <Navbar />
             </div>
@@ -41,7 +41,7 @@ const Home: NextPage = () => {
             </div>
             {/* </div> */}
           </div>
-          <div className="w-1/6"></div>
+          {/* <div className="w-1/6"></div> */}
         </div>
       </main>
     </>
