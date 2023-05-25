@@ -22,13 +22,18 @@ const Navbar: React.FC = () => {
           ></Image>
         </div>
         <div className="rounded-3xl bg-neutral-100 px-12 py-4 shadow-sm">
-          <ul className="flex justify-center gap-10">
+          <ul className="text-md flex justify-center gap-10 rounded-full font-normal transition">
             <li>
-              <Link href={"/"}>Home</Link>
+              <Link
+                href={"/"}
+                className="hover:text-teal-600 hover:underline hover:underline-offset-8"
+              >
+                Home
+              </Link>
             </li>
             <li>
               <button
-                className=" rounded-full font-semibold text-black no-underline transition"
+                className="hover:text-teal-600 hover:underline hover:underline-offset-8"
                 onClick={() => setShowModal(true)}
               >
                 Create
@@ -41,15 +46,25 @@ const Navbar: React.FC = () => {
               />
             </li>
             <li>
-              <button className=" rounded-full font-semibold text-black no-underline transition">
+              <button className="hover:text-teal-600 hover:underline hover:underline-offset-8">
                 Posts
               </button>
             </li>
             <li>
-              <Link href={"/"}>About</Link>
+              <Link
+                href={"/"}
+                className="hover:text-teal-600 hover:underline hover:underline-offset-8"
+              >
+                About
+              </Link>
             </li>
             <li>
-              <Link href={"/"}>Contact</Link>
+              <Link
+                href={"/"}
+                className="hover:text-teal-600 hover:underline hover:underline-offset-8"
+              >
+                Contact
+              </Link>
             </li>
           </ul>
         </div>
@@ -71,8 +86,8 @@ const Navbar: React.FC = () => {
             <button
               className={
                 sessionData
-                  ? `  w-32  rounded-3xl bg-red-500 font-semibold  text-white hover:bg-red-600`
-                  : ` h-10 w-32 rounded-3xl bg-blue-500  font-semibold text-white hover:bg-blue-600`
+                  ? `w-32  rounded-3xl bg-red-500 font-semibold  text-white hover:bg-red-600`
+                  : `h-10 w-32 rounded-3xl bg-teal-600  font-semibold text-white hover:bg-teal-600`
               }
               onClick={sessionData ? () => void signOut() : () => void signIn()}
             >

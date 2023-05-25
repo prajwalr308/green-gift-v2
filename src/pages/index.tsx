@@ -33,9 +33,9 @@ const Home: NextPage = () => {
             <Navbar />
           </div>
           {/* <div className="flex"> */}
-          <div className="mx-10 grid grid-cols-3 gap-4">
+          <div className="mx-10 grid grid-cols-4 gap-6 ">
             {data?.map((post) => (
-              <div key={post.id} className="rounded-lg bg-white shadow-md">
+              <div key={post.id} className="rounded-lg bg-white shadow-lg">
                 <PostView postId={post.id} post={post} />
               </div>
             ))}
