@@ -77,19 +77,19 @@ const PostView = (props: Post) => {
 
   if (!props.post) return <div>no data</div>;
   return (
-    <div className="hover:bg-dark-lighter anim border-opacity-15 flex cursor-pointer border-b border-gray-100 p-3">
+    <div className="hover:bg-dark-lighter anim border-opacity-15 flex cursor-pointer p-3 ">
       {props.post && (
         <div className="h-12 w-12 flex-shrink-0 pt-1">
           <div className="relative">
-            <div className="anim hover:bg-opacity-15 absolute bottom-0 left-0 right-0 top-0 z-10 rounded-full hover:bg-sky-200"></div>
+            <div className="anim hover:bg-opacity-15 absolute bottom-0 left-0 right-0 top-0 z-10 rounded-full"></div>
             {props.post.author.image && props.post.author.name && (
               <Link href={`/${props.post.authorId}` || ""}>
                 <Image
                   src={props.post.author.image}
                   alt={`${props.post.author.name}`}
-                  className="asd h-12 w-12 min-w-full rounded-full"
-                  width={48}
-                  height={48}
+                  className="asd h-12 w-12 min-w-full rounded-full border-2 border-teal-600 border-opacity-30"
+                  width={46}
+                  height={46}
                 />
               </Link>
             )}
@@ -102,9 +102,9 @@ const PostView = (props: Post) => {
             <Link href={`/post/${props.post.id}` || ""}>
               <div className="flex">
                 <div className="flex flex-grow flex-wrap items-center">
-                  <div>
-                    <span className="text-gray-600">
-                      {props.post.author.name} ·{" "}
+                  <div className="text-gray-600">
+                    <span className="">{props.post.author.name} · </span>
+                    <span className="text-xs text-gray-400">
                       {dayjs(props.post.createdAt).fromNow()}
                     </span>
                   </div>
@@ -114,26 +114,23 @@ const PostView = (props: Post) => {
                 </button>
               </div>
               <div className="pr-1">
-                <div className="text-sm leading-5 font-semibold text-gray-900">
+                <div className="text-base font-semibold leading-5 text-gray-900">
                   {props.post.title}
                 </div>
-                <div className="text-sm leading-5 text-gray-500">
-                  location: {props.post.location}
+                <div className="text-xs leading-5 text-gray-500">
+                  Location: {props.post.location}
                 </div>
-                <div
-                  className="text-sm leading-5 text-gray-500"
-                  
-                >
-                  desc: {props.post.content}
+                <div className="text-xs leading-5 text-gray-500">
+                  Description: {props.post.content}
                 </div>
                 <div className="mt-3 flex flex-wrap">
                   {props.post.image && (
                     <Image
                       src={props.post.image}
                       alt={`${props.post.title}`}
-                      className="w-full"
-                      width={298}
-                      height={198}
+                      className="object-fill"
+                      width={250}
+                      height={100}
                     />
                   )}
                 </div>
@@ -141,10 +138,11 @@ const PostView = (props: Post) => {
             </Link>
           </div>
         )}
-        <div className="mt-3 flex">
+        <div className="mt-3 flex gap-4">
           {!isLiked ? (
-            <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
+            <div className="hover:text-primary anim   select-none items-center text-gray-500">
               <AiOutlineHeart
+                size={22}
                 className="mr-1"
                 onClick={() => likeHandler(props.post)}
               />
@@ -153,8 +151,9 @@ const PostView = (props: Post) => {
               </span> */}
             </div>
           ) : (
-            <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
+            <div className="hover:text-primary anim  select-none items-center text-gray-500">
               <AiFillHeart
+                size={22}
                 className="mr-1"
                 color="#FF3777"
                 onClick={() => likeHandler(props.post)}
@@ -166,14 +165,18 @@ const PostView = (props: Post) => {
           )}
 
           <div className="hover:text-primary anim flex flex-grow select-none items-center text-gray-500">
-            <BiComment className="mr-1" onClick={() => setIsCommenting(!isCommenting)} />
+            <BiComment
+              size={22}
+              className="mr-1"
+              onClick={() => setIsCommenting(!isCommenting)}
+            />
             {/* <span className="ml-3 text-xs">
              
             </span> */}
           </div>
         </div>
         {isCommenting && props.post.id && (
-          <div>
+          <div className="my-2">
             <CommentInput postId={props.post.id} />
           </div>
         )}

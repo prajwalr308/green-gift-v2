@@ -19,25 +19,29 @@ const PostById: NextPage<PageProps> = ({ postId }) => {
         <title>{data[0]?.title}</title>
       </Head>
 
-      <main className="flex justify-center">
-        <Link href="/" className="mt-4">
-          <AiOutlineArrowLeft size={20} />
-        </Link>
-        {data[0] && ( // <-- this is the fix
-          <div>
-            <PostView postId={undefined} post={data[0]} />
-            {data[0].PostComments.map((comment) => (
-              <div key={comment.id} className="flex justify-around">
-                <div>
-                  <div className="text-gray-600 text-sm">{comment.user.name} ·{" "}
-                {dayjs(comment.createdAt).fromNow()}</div>
-                  <div>{comment.content}</div>
+      <main>
+        <Navbar />
+        <div className="flex justify-center">
+          {/* <Link href="/" className="mt-4">
+            <AiOutlineArrowLeft size={20} />
+          </Link> */}
+          {data[0] && ( // <-- this is the fix
+            <div>
+              <PostView postId={undefined} post={data[0]} />
+              {data[0].PostComments.map((comment) => (
+                <div key={comment.id} className="flex justify-around ">
+                  <div>
+                    <div className="text-sm text-gray-600">
+                      {comment.user.name} · {dayjs(comment.createdAt).fromNow()}
+                    </div>
+                    <div>{comment.content}</div>
+                  </div>
+                  <div className="text-gray-600"></div>
                 </div>
-                <div className="text-gray-600"></div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </main>
     </>
   );
@@ -50,6 +54,7 @@ import SuperJSON from "superjson";
 import PostView from "~/components/Post";
 import Link from "next/link";
 import { AiFillCaretLeft, AiOutlineArrowLeft } from "react-icons/ai";
+import Navbar from "~/components/Navbar";
 
 export const getStaticProps: GetStaticProps<{ postId: string }> = async (
   context
