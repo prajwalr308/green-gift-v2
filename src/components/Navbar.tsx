@@ -75,14 +75,14 @@ const Navbar: React.FC = () => {
                 closeModal={closeModal}
               />
             </li>
-            <li>
+            {/* <li>
               <button className="hover:text-teal-600 hover:underline hover:underline-offset-8">
                 Posts
               </button>
-            </li>
+            </li> */}
             <li>
               <Link
-                href={"/"}
+                href={"/about"}
                 className="hover:text-teal-600 hover:underline hover:underline-offset-8"
               >
                 About
@@ -90,7 +90,7 @@ const Navbar: React.FC = () => {
             </li>
             <li>
               <Link
-                href={"/"}
+                href={"/contact"}
                 className="hover:text-teal-600 hover:underline hover:underline-offset-8"
               >
                 Contact
@@ -109,22 +109,25 @@ const Navbar: React.FC = () => {
                 Home
               </Link>
               <button
-                onClick={() => setShowModal(true)}
+                onClick={() => {
+                  setShowModal(true);
+                  setIsOpen(!isOpen);
+                }}
                 className="mb-4 block hover:text-teal-600 hover:underline"
               >
                 Create
               </button>
-              <button className="mb-4 block hover:text-teal-600 hover:underline">
+              {/* <button className="mb-4 block hover:text-teal-600 hover:underline">
                 Posts
-              </button>
+              </button> */}
               <Link
-                href={"/"}
+                href={"/about"}
                 className="mb-4 block hover:text-teal-600 hover:underline"
               >
                 About
               </Link>
               <Link
-                href={"/"}
+                href={"/contact"}
                 className="mb-4 block hover:text-teal-600 hover:underline"
               >
                 Contact
@@ -147,17 +150,19 @@ const Navbar: React.FC = () => {
             ) : (
               <div></div> //put logo here later
             )}
-            <div className="absolute top-5 right-5 lg:block lg:static">
-            <button
-              className={
-                sessionData
-                  ? `   w-32 rounded-3xl  bg-red-500 font-semibold text-white hover:bg-red-600   `
-                  : ` h-10 w-32 rounded-3xl  bg-teal-600 font-semibold text-white hover:bg-teal-600  `
-              }
-              onClick={sessionData ? () => void signOut() : () => void signIn()}
-            >
-              {sessionData ? "Sign out" : "Sign in"}
-            </button>
+            <div className="absolute right-5 top-5 lg:static lg:block">
+              <button
+                className={
+                  sessionData
+                    ? `   w-32 rounded-3xl  bg-red-500 font-semibold text-white hover:bg-red-600   `
+                    : ` h-10 w-32 rounded-3xl  bg-teal-600 font-semibold text-white hover:bg-teal-600  `
+                }
+                onClick={
+                  sessionData ? () => void signOut() : () => void signIn()
+                }
+              >
+                {sessionData ? "Sign out" : "Sign in"}
+              </button>
             </div>
           </div>
         </div>
