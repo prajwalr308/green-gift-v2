@@ -1,11 +1,12 @@
 import { signIn, signOut, useSession } from "next-auth/react";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import AddPosts from "~/components/AddPosts";
 
 const Navbar: React.FC = () => {
   const { data: sessionData } = useSession();
+  const [isOpen, setIsOpen] = useState(false);
   const [showModal, setShowModal] = React.useState(false);
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
@@ -13,7 +14,36 @@ const Navbar: React.FC = () => {
   return (
     <div className="mb-5">
       <div className="mx-12 flex items-center justify-between py-4 ">
-        <div className="">
+        {!isOpen ? (
+          <div className="fixed top-5 z-20    lg:hidden">
+            <button onClick={() => setIsOpen(!isOpen)}>
+              <div className="mb-1 h-1 w-6 rounded bg-gray-600"></div>
+              <div className="mb-1 h-1 w-6 rounded bg-gray-600"></div>
+              <div className="h-1 w-6 rounded bg-gray-600"></div>
+            </button>
+          </div>
+        ) : (
+          <div className="fixed top-5 z-20 lg:hidden">
+            {/* Close ('X') Button */}
+            <button onClick={() => setIsOpen(!isOpen)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="h-8 w-8"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        )}
+        <div className="hidden lg:block">
           <Image
             src="/Green-gift-logo.png"
             alt="logo"
@@ -21,7 +51,7 @@ const Navbar: React.FC = () => {
             height={50}
           ></Image>
         </div>
-        <div className="rounded-3xl bg-neutral-100 px-12 py-4 shadow-sm">
+        <div className="hidden rounded-3xl bg-neutral-100 px-12 py-4 shadow-sm lg:flex">
           <ul className="text-md flex justify-center gap-10 rounded-full font-normal transition">
             <li>
               <Link
@@ -68,6 +98,40 @@ const Navbar: React.FC = () => {
             </li>
           </ul>
         </div>
+        {/* sidebar */}
+        {isOpen && (
+          <div className="fixed bottom-0 left-0 right-2/3 top-0 z-10  bg-white p-4 shadow-md lg:hidden ">
+            <div className="ml-16 mt-10">
+              <Link
+                href={"/"}
+                className="mb-4 block hover:text-teal-600 hover:underline"
+              >
+                Home
+              </Link>
+              <button
+                onClick={() => setShowModal(true)}
+                className="mb-4 block hover:text-teal-600 hover:underline"
+              >
+                Create
+              </button>
+              <button className="mb-4 block hover:text-teal-600 hover:underline">
+                Posts
+              </button>
+              <Link
+                href={"/"}
+                className="mb-4 block hover:text-teal-600 hover:underline"
+              >
+                About
+              </Link>
+              <Link
+                href={"/"}
+                className="mb-4 block hover:text-teal-600 hover:underline"
+              >
+                Contact
+              </Link>
+            </div>
+          </div>
+        )}
         <div className="basis-1/12">
           <div className="flex gap-2">
             {sessionData ? (
@@ -83,16 +147,18 @@ const Navbar: React.FC = () => {
             ) : (
               <div></div> //put logo here later
             )}
+            <div className="absolute top-5 right-5 lg:block lg:static">
             <button
               className={
                 sessionData
-                  ? `w-32  rounded-3xl bg-red-500 font-semibold  text-white hover:bg-red-600`
-                  : `h-10 w-32 rounded-3xl bg-teal-600  font-semibold text-white hover:bg-teal-600`
+                  ? `   w-32 rounded-3xl  bg-red-500 font-semibold text-white hover:bg-red-600   `
+                  : ` h-10 w-32 rounded-3xl  bg-teal-600 font-semibold text-white hover:bg-teal-600  `
               }
               onClick={sessionData ? () => void signOut() : () => void signIn()}
             >
               {sessionData ? "Sign out" : "Sign in"}
             </button>
+            </div>
           </div>
         </div>
       </div>
