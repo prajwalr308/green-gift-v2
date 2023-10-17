@@ -15,7 +15,14 @@ import Layout from "~/components/Layout";
 const Home: NextPage = () => {
   const { data, isLoading } = api.posts.getAll.useQuery();
 
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading)
+    return (
+      <Layout>
+        <div className="flex min-h-screen  justify-center">
+          <div className="h-16 w-16 animate-spin rounded-full border-t-4 border-solid border-teal-500"></div>
+        </div>
+      </Layout>
+    );
   if (!data) return <div>no data</div>;
   return (
     <>

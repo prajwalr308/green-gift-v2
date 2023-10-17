@@ -5,7 +5,7 @@ const About = () => {
   return (
     <Layout>
       <section className="mx-auto mt-16 max-w-5xl px-6">
-        <h1 className="mb-8 text-3xl font-semibold">About GreenGift</h1>
+        <h1 className="mb-8 text-3xl font-semibold text-teal-500">About GreenGift</h1>
 
         <p className="mb-6">
           GreenGift is a community-driven platform dedicated to making the world
