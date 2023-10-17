@@ -8,7 +8,7 @@ const Contact = () => {
         <h1 className="text-3xl font-semibold mb-8">Contact GreenGift</h1>
 
         <p className="mb-6">
-          We at GreenGift are always eager to hear from our community. Whether you have questions, suggestions, or just want to share your experience, we're here to help.
+          We at GreenGift are always eager to hear from our community. Whether you have questions, suggestions, or just want to share your experience, we&apos;re here to help.
         </p>
 
         <div className="mb-6">

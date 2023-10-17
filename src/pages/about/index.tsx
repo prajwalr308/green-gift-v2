@@ -22,15 +22,15 @@ const About = () => {
 
         <p className="mb-6">
           Our platform allows individuals to donate their old or unwanted items
-          to those in need. Whether it's a book that can enlighten another
+          to those in need. Whether it&apos;s a book that can enlighten another
           reader, a tool that can help someone with their craft, or tech that
           can bridge the digital divide, every item donated on GreenGift can
-          make a difference in someone's life.
+          make a difference in someone&apos;s life.
         </p>
 
         <p>
           We are proud to foster a community that believes in the importance of
-          giving, sharing, and sustainability. Whether you're looking to donate
+          giving, sharing, and sustainability. Whether you&apos;re looking to donate
           items or find something you need, we invite you to be a part of the
           GreenGift journey.
         </p>

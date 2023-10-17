@@ -11,20 +11,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <link rel="icon" href="/Green-gift-favicon.png" />
       </Head>
       <main>
-        {/* <div> */}
-        {/* <div className="w-1/6">
-            <Sidebar />
-          </div> */}
-        <div className="">
+        <div>
           <div>
             <Navbar />
           </div>
           {children}
         </div>
-        {/* </div> */}
-
-        {/* <div className="w-1/6"></div> */}
-        {/* </div> */}
       </main>
     </>
   );
