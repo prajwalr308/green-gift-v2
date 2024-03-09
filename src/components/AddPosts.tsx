@@ -208,7 +208,7 @@ const AddPosts = (props: AddPostsProps) => {
           <div className="mb-6">
             <label className="mb-2 block font-bold text-gray-700">Image</label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="w-full text-black text-base bg-gray-100 file:cursor-pointer cursor-pointer file:border-0 file:py-2.5 file:px-4 file:mr-4 file:bg-teal-500 file:hover:bg-teal-600 file:text-white rounded"
               id="image"
               name="image"
               type="file"

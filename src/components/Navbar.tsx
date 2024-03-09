@@ -137,7 +137,7 @@ const Navbar: React.FC = () => {
         )}
         <div className="basis-1/12">
           <div className="flex gap-2">
-            {sessionData ? (
+            {/* {sessionData ? (
               <Link href={`/${sessionData?.user.id}`}>
                 <Image
                   src={sessionData?.user.image || ""}
@@ -149,12 +149,12 @@ const Navbar: React.FC = () => {
               </Link>
             ) : (
               <div></div> //put logo here later
-            )}
+            )} */}
             <div className="absolute right-5 top-5 lg:static lg:block">
               <button
                 className={
                   sessionData
-                    ? `   w-32 rounded-3xl  bg-red-500 font-semibold text-white hover:bg-red-600   `
+                    ? ` h-10    w-32 rounded-3xl  bg-red-500 font-semibold text-white hover:bg-red-600   `
                     : ` h-10 w-32 rounded-3xl  bg-teal-600 font-semibold text-white hover:bg-teal-600  `
                 }
                 onClick={
