@@ -23,4 +23,4 @@ To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the fo
 
 You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
 
-
+## Migrated from planetscale to supabase
